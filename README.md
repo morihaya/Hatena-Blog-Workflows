@@ -1,5 +1,26 @@
 # HatenaBlog Workflows Boilerplate(β)
 
+はてなブログを管理するリポジトリ。[Hatena-Blog-Workflows-Boilerplate
+](https://github.com/hatena/Hatena-Blog-Workflows-Boilerplate)より作成。
+
+- ブログURL
+  - カスタムドメイン: https://blog.morihaya.tech/
+  - オリジナルドメイン: https://morihaya.hatenablog.com/
+
+## 📋 Quick Reference
+
+基本的に個人のブログしか編集しないため、以下の流れになる。
+
+1. Actions から  `create draft` を選択し、`Title`に記事タイトルを設定、`Branch: main`に対して実行する -> [Link](https://github.com/morihaya/Hatena-Blog-Workflows/actions/workflows/create-draft.yaml)
+2. 作成した下書きを含むプルリクエストが作成される
+3. 2のPRを編集していく
+
+## Original document
+
+以下からはオリジナルのREADMEの内容です。
+
+---
+
 - このBoilerplateは、企業がはてなブログで技術ブログを運営する際のレビューや公開作業など、運営ワークフローを支援する目的で作成しています
 - GitHub 上で、はてなブログとの記事の同期、下書きの作成・編集・公開、公開記事の編集などを行うことができます。下書きの作成時にプルリクエストが作成されるため、記事のレビューなどの業務のワークフローに組み込むことが容易になります
 - 本機能はベータ版です。正常に動作しない可能性がありますが、予めご了承下さい
