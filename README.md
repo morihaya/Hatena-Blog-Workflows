@@ -15,6 +15,20 @@
 2. 作成した下書きを含むプルリクエストが作成される
 3. 2のPRを編集していく
 
+### 画像ファイルについて
+
+画像ファイルはHatenaのサービスである”フォトライフ”に自動でアップロードされる仕組みが[ワークフローによって提供](https://github.com/hatena/hatenablog-workflows/blob/main/fotolife-client.py)されている。
+
+そのため `./.vscode/settings.json` に以下の設定をしてあり、VSCodeのpasteImage Extentionで貼り付けておけば自動でアップロードされる状態となっている。
+
+```json
+...
+    "pasteImage.insertPattern": "${imageSyntaxPrefix}images/${currentFileNameWithoutExt}/${imageFileName}${imageSyntaxSuffix}",
+    "pasteImage.path": "${projectRoot}/draft_entries/images/${currentFileNameWithoutExt}"
+...
+```
+
+
 ## Original document
 
 以下からはオリジナルのREADMEの内容です。
@@ -64,7 +78,7 @@ default:
 
 ## オプション
 - 下書きの作成時のプルリクエストをドラフトプルリクエストとして作成するかどうかのオプション
-  - ドラフトプルリクエストは[利用できるプランに制限](https://docs.github.com/ja/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/changing-the-stage-of-a-pull-request)があります。対象外のプランを利用している場合、以下のファイルの該当行を `draft: false` に変更してください 
+  - ドラフトプルリクエストは[利用できるプランに制限](https://docs.github.com/ja/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/changing-the-stage-of-a-pull-request)があります。対象外のプランを利用している場合、以下のファイルの該当行を `draft: false` に変更してください
   - `/.github/workflows/pull-draft.yaml#L15`
   - `/.github/workflows/create-draft.yaml#L15`
 
