@@ -1,12 +1,10 @@
 <header class="site-header">
   <div class="container">
-    <a class="site-title" href="{{ "/" | relURL }}">{{ site.Title }}</a>
+    <a class="site-title" href="{{ site.Home.RelPermalink }}">{{ site.Title }}</a>
     <nav class="site-nav">
-      <a href="{{ "/entry/" | relURL }}">記事一覧</a>
-      <a href="{{ "/categories/" | relURL }}">カテゴリ</a>
-      {{- with site.Home.OutputFormats.Get "rss" }}
-      <a href="{{ .Permalink }}">RSS</a>
-      {{- end }}
+      {{- with site.GetPage "/entry" }}<a href="{{ .RelPermalink }}">記事一覧</a>{{ end }}
+      {{- with site.GetPage "/categories" }}<a href="{{ .RelPermalink }}">カテゴリ</a>{{ end }}
+      {{- with site.Home.OutputFormats.Get "rss" }}<a href="{{ .RelPermalink }}">RSS</a>{{ end }}
     </nav>
   </div>
 </header>

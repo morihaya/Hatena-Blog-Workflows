@@ -186,7 +186,8 @@ def convert_line(line: str, manifest: dict, titles: dict, args, stats: Stats, so
                 width = opt[1:]
 
         if width:
-            return f'<img src="{path}" alt="{alt}" width="{width}">'
+            # 生 HTML は Hugo が URL を解決できないため、ショートコードで出す
+            return f'{{{{< img src="{path}" alt="{alt}" width="{width}" >}}}}'
         return f"![{alt}]({path})"
 
     def figure(m: re.Match) -> str:
