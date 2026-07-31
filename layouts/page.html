@@ -6,7 +6,7 @@
       <time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">{{ .Date.Format "2006-01-02" }}</time>
       {{- with .Params.categories }}
       <span class="entry-categories">
-        {{- range . }}<a class="category" href="{{ (printf "/categories/%s/" (urlize .)) | relURL }}">{{ . }}</a>{{ end }}
+        {{- range . }}{{ with site.GetPage (printf "/categories/%s" .) }}<a class="category" href="{{ .RelPermalink }}">{{ .Title }}</a>{{ end }}{{ end }}
       </span>
       {{- end }}
     </div>

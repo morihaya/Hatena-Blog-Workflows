@@ -1,0 +1,5 @@
+{{- /* 幅指定付きの画像。convert_entries.py が [f:id:...:wNN] から生成する。
+       パスの解決は render-image.html と同じ理由で先頭 "/" を落として relURL に通す */ -}}
+{{- $src := .Get "src" -}}
+{{- if hasPrefix $src "/" -}}{{- $src = strings.TrimPrefix "/" $src | relURL -}}{{- end -}}
+<img src="{{ $src }}" alt="{{ .Get "alt" }}"{{ with .Get "width" }} width="{{ . }}"{{ end }} loading="lazy">

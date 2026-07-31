@@ -1,0 +1,8 @@
+{{- /* Markdown 画像のレンダーフック。
+       relURL は先頭 "/" 付きのパスをサイトルート扱いしてサブパスを付けないため、
+       先頭の "/" を落としてから通す。これによりサイトが
+       /Hatena-Blog-Workflows/ 配下にあってもカスタムドメイン直下にあっても
+       同じ Markdown が正しく解決される。外部 URL はそのまま通す。 */ -}}
+{{- $src := .Destination -}}
+{{- if hasPrefix $src "/" -}}{{- $src = strings.TrimPrefix "/" $src | relURL -}}{{- end -}}
+<img src="{{ $src }}" alt="{{ .PlainText }}"{{ with .Title }} title="{{ . }}"{{ end }} loading="lazy">

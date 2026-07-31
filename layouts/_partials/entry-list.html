@@ -7,7 +7,7 @@
     <a class="entry-link" href="{{ .RelPermalink }}">{{ .Title }}</a>
     {{- with .Params.categories }}
     <span class="entry-categories">
-      {{- range . }}<a class="category" href="{{ (printf "/categories/%s/" (urlize .)) | relURL }}">{{ . }}</a>{{ end }}
+      {{- range . }}{{ with site.GetPage (printf "/categories/%s" .) }}<a class="category" href="{{ .RelPermalink }}">{{ .Title }}</a>{{ end }}{{ end }}
     </span>
     {{- end }}
   </li>
