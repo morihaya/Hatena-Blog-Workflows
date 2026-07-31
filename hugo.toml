@@ -1,0 +1,44 @@
+baseURL = "https://blog.morihaya.tech/"
+languageCode = "ja"
+defaultContentLanguage = "ja"
+title = "もりはやメモφ(・ω・ )"
+
+# 日本語の要約・文字数カウントを正しく行う
+hasCJKLanguage = true
+summaryLength = 60
+
+enableRobotsTXT = true
+enableGitInfo = false
+
+# はてな時代の URL (/entry/YYYY/MM/DD/HHMMSS) は content/ の階層がそのまま
+# 反映されるため、permalinks の設定は不要。構造を変えないこと。
+
+[pagination]
+  pagerSize = 20
+
+[taxonomies]
+  category = "categories"
+
+[params]
+  description = "もりはやのメモ書き"
+  author = "morihaya"
+  # はてなブログ時代の記事もここに残っている旨のフッタ表記に使う
+  hatenaBlogURL = "https://morihaya.hatenablog.com/"
+
+[markup]
+  [markup.goldmark.renderer]
+    # 記事に img.esa.io の生 <img> タグが含まれるため必須
+    unsafe = true
+  [markup.tableOfContents]
+    # 本文で # (H1) を大見出しに使っている記事が 44 件あるため 1 から拾う
+    startLevel = 1
+    endLevel = 4
+  [markup.highlight]
+    # ライト/ダーク両対応の CSS を assets/css/chroma.css で当てるため false
+    noClasses = false
+    lineNos = false
+    tabWidth = 4
+
+[services]
+  [services.rss]
+    limit = 50

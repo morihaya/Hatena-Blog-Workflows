@@ -1,0 +1,64 @@
+name: deploy blog to github pages
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "content/**"
+      - "layouts/**"
+      - "assets/**"
+      - "static/**"
+      - "hugo.toml"
+      - ".github/workflows/deploy-pages.yaml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# デプロイは同時に1つだけ。実行中のものはキャンセルせず待たせる
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      HUGO_VERSION: 0.158.0
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Install Hugo
+        run: |
+          wget -q -O "${RUNNER_TEMP}/hugo.deb" \
+            "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.deb"
+          sudo dpkg -i "${RUNNER_TEMP}/hugo.deb"
+
+      - name: Configure Pages
+        id: pages
+        uses: actions/configure-pages@v5
+
+      # base_url は Pages の設定に追従する。カスタムドメイン設定前は
+      # https://morihaya.github.io/<repo>、設定後は https://blog.morihaya.tech になる
+      - name: Build
+        run: hugo --minify --gc --baseURL "${{ steps.pages.outputs.base_url }}/"
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./public
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

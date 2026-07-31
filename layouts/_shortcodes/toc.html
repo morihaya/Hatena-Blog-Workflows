@@ -1,0 +1,7 @@
+{{- /* はてなの [:contents] 記法の置き換え。本文中の元の位置に目次を描画する */ -}}
+{{- with .Page.TableOfContents }}
+<nav class="toc" aria-label="目次">
+  <p class="toc-title">目次</p>
+  {{ . }}
+</nav>
+{{- end }}

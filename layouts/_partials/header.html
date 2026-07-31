@@ -1,0 +1,12 @@
+<header class="site-header">
+  <div class="container">
+    <a class="site-title" href="{{ "/" | relURL }}">{{ site.Title }}</a>
+    <nav class="site-nav">
+      <a href="{{ "/entry/" | relURL }}">記事一覧</a>
+      <a href="{{ "/categories/" | relURL }}">カテゴリ</a>
+      {{- with site.Home.OutputFormats.Get "rss" }}
+      <a href="{{ .Permalink }}">RSS</a>
+      {{- end }}
+    </nav>
+  </div>
+</header>
