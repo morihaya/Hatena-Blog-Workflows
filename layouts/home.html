@@ -1,0 +1,4 @@
+{{ define "main" }}
+  <h1 class="page-title">{{ site.Title }}</h1>
+  {{ partial "entry-list.html" (dict "page" . "pages" site.RegularPages) }}
+{{ end }}

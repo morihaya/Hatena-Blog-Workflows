@@ -1,0 +1,24 @@
+{{ define "main" }}
+<article class="entry">
+  <header class="entry-header">
+    <h1 class="entry-title">{{ .Title }}</h1>
+    <div class="entry-meta">
+      <time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">{{ .Date.Format "2006-01-02" }}</time>
+      {{- with .Params.categories }}
+      <span class="entry-categories">
+        {{- range . }}<a class="category" href="{{ (printf "/categories/%s/" (urlize .)) | relURL }}">{{ . }}</a>{{ end }}
+      </span>
+      {{- end }}
+    </div>
+  </header>
+
+  <div class="content">
+    {{ .Content }}
+  </div>
+</article>
+
+<nav class="entry-nav">
+  <span class="entry-nav-prev">{{ with .PrevInSection }}<a href="{{ .RelPermalink }}">&larr; {{ .Title }}</a>{{ end }}</span>
+  <span class="entry-nav-next">{{ with .NextInSection }}<a href="{{ .RelPermalink }}">{{ .Title }} &rarr;</a>{{ end }}</span>
+</nav>
+{{ end }}

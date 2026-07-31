@@ -1,0 +1,23 @@
+{{- /* 記事一覧 (ページャ付き)。引数は dict "page" <現在のページ> "pages" <一覧にする記事> */ -}}
+{{- $paginator := .page.Paginate .pages }}
+<ul class="entry-list">
+  {{- range $paginator.Pages }}
+  <li class="entry-item">
+    <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
+    <a class="entry-link" href="{{ .RelPermalink }}">{{ .Title }}</a>
+    {{- with .Params.categories }}
+    <span class="entry-categories">
+      {{- range . }}<a class="category" href="{{ (printf "/categories/%s/" (urlize .)) | relURL }}">{{ . }}</a>{{ end }}
+    </span>
+    {{- end }}
+  </li>
+  {{- end }}
+</ul>
+
+{{- if gt $paginator.TotalPages 1 }}
+<nav class="pagination">
+  <span class="pagination-prev">{{ with $paginator.Prev }}<a href="{{ .URL }}">&larr; 新しい記事</a>{{ end }}</span>
+  <span class="pagination-status">{{ $paginator.PageNumber }} / {{ $paginator.TotalPages }}</span>
+  <span class="pagination-next">{{ with $paginator.Next }}<a href="{{ .URL }}">古い記事 &rarr;</a>{{ end }}</span>
+</nav>
+{{- end }}

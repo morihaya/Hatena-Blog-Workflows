@@ -1,0 +1,276 @@
+/* もりはやメモ - 自作最小テーマ
+   ライト/ダークは prefers-color-scheme に追従する */
+
+:root {
+  --bg: #ffffff;
+  --bg-subtle: #f6f7f9;
+  --fg: #1f2328;
+  --fg-muted: #656d76;
+  --border: #d8dee4;
+  --accent: #0969da;
+  --accent-hover: #0550ae;
+  --code-bg: #f6f8fa;
+
+  --font-sans: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Hiragino Sans",
+    "Hiragino Kaku Gothic ProN", "Noto Sans JP", Meiryo, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+
+  --measure: 46rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0d1117;
+    --bg-subtle: #161b22;
+    --fg: #e6edf3;
+    --fg-muted: #9198a1;
+    --border: #30363d;
+    --accent: #4493f8;
+    --accent-hover: #79c0ff;
+    --code-bg: #161b22;
+  }
+}
+
+/* ------------------------------------------------------------------ base */
+
+html {
+  box-sizing: border-box;
+  -webkit-text-size-adjust: 100%;
+}
+*, *::before, *::after { box-sizing: inherit; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.85; /* 日本語主体のため広めに取る */
+  overflow-wrap: break-word;
+}
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-hover); text-decoration: underline; }
+
+.container {
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+
+/* ---------------------------------------------------------------- header */
+
+.site-header {
+  border-bottom: 1px solid var(--border);
+  padding: 1rem 0;
+  margin-bottom: 2.5rem;
+}
+.site-header .container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+}
+.site-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--fg);
+}
+.site-title:hover { color: var(--accent); text-decoration: none; }
+.site-nav { display: flex; gap: 1rem; font-size: 0.9rem; }
+
+/* ------------------------------------------------------------ entry list */
+
+.page-title {
+  font-size: 1.5rem;
+  line-height: 1.4;
+  margin: 0 0 1.75rem;
+}
+
+.entry-list { list-style: none; padding: 0; margin: 0; }
+.entry-item {
+  padding: 0.9rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.entry-item time {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--fg-muted);
+  font-variant-numeric: tabular-nums;
+}
+.entry-link { font-size: 1.05rem; font-weight: 600; }
+
+.entry-categories {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-left: 0.25rem;
+  vertical-align: middle;
+}
+.category {
+  font-size: 0.75rem;
+  color: var(--fg-muted);
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.05rem 0.6rem;
+  line-height: 1.7;
+}
+.category:hover { color: var(--accent); text-decoration: none; }
+
+.term-list { list-style: none; padding: 0; }
+.term-list li { padding: 0.35rem 0; }
+.term-count { color: var(--fg-muted); font-size: 0.85rem; }
+
+/* ------------------------------------------------------------- entry body */
+
+.entry-header { margin-bottom: 2rem; }
+.entry-title { font-size: 1.7rem; line-height: 1.45; margin: 0 0 0.6rem; }
+.entry-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.85rem;
+  color: var(--fg-muted);
+}
+
+/* はてな時代の記事は本文の大見出しに # (H1) を使っているものが多い。
+   記事タイトルより目立たないよう、本文側の見出しは h1 を頂点に段階付ける */
+.content h1, .content h2, .content h3, .content h4 {
+  line-height: 1.5;
+  margin: 2.5rem 0 0.9rem;
+}
+.content h1, .content h2 {
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid var(--border);
+}
+.content h1 { font-size: 1.4rem; }
+.content h2 { font-size: 1.25rem; }
+.content h3 { font-size: 1.1rem; }
+.content h4 { font-size: 1rem; }
+
+.content p { margin: 1.1rem 0; }
+.content ul, .content ol { padding-left: 1.6rem; }
+.content li { margin: 0.3rem 0; }
+
+.content img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 1.25rem auto;
+  border-radius: 4px;
+}
+
+.content blockquote {
+  margin: 1.25rem 0;
+  padding: 0.25rem 1rem;
+  border-left: 4px solid var(--border);
+  color: var(--fg-muted);
+}
+
+.content table {
+  display: block;
+  overflow-x: auto;
+  border-collapse: collapse;
+  margin: 1.25rem 0;
+  font-size: 0.92rem;
+}
+.content th, .content td {
+  border: 1px solid var(--border);
+  padding: 0.4rem 0.75rem;
+  text-align: left;
+}
+.content th { background: var(--bg-subtle); }
+
+.content hr { border: 0; border-top: 1px solid var(--border); margin: 2.5rem 0; }
+
+/* ------------------------------------------------------------------ code */
+
+.content code {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.1em 0.35em;
+}
+.content pre {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.9rem 1rem;
+  overflow-x: auto;
+  line-height: 1.6;
+}
+.content pre code {
+  background: none;
+  border: 0;
+  padding: 0;
+  font-size: 0.85rem;
+}
+/* Chroma が敷く背景色はテーマの --code-bg に揃える
+   (ダークでは chroma の既定色がページ背景と同色になり境界が消えるため) */
+.content pre.chroma { background-color: var(--code-bg); }
+
+/* -------------------------------------------------------------------- toc */
+
+.toc {
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.75rem 1.25rem;
+  margin: 1.75rem 0;
+  font-size: 0.92rem;
+}
+.toc-title { margin: 0.25rem 0; font-weight: 700; }
+/* Hugo の目次は見出しレベルに応じて ul を入れ子にするため、
+   マーカーを消してインデントだけで階層を表す */
+.toc ul { list-style: none; padding-left: 1rem; margin: 0.35rem 0; }
+.toc > ul { padding-left: 0; }
+.toc li { margin: 0.15rem 0; }
+
+/* -------------------------------------------------------------- footnotes */
+
+.footnotes {
+  margin-top: 3rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.9rem;
+  color: var(--fg-muted);
+}
+.footnote-backref { text-decoration: none; }
+
+/* ------------------------------------------------------- nav / pagination */
+
+.pagination, .entry-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 2.5rem 0;
+  font-size: 0.9rem;
+}
+.pagination-status { color: var(--fg-muted); font-variant-numeric: tabular-nums; }
+.entry-nav {
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+.entry-nav span { flex: 1 1 0; }
+.entry-nav-next { text-align: right; }
+
+/* ---------------------------------------------------------------- footer */
+
+.site-footer {
+  margin-top: 4rem;
+  padding: 1.5rem 0;
+  border-top: 1px solid var(--border);
+  color: var(--fg-muted);
+  font-size: 0.85rem;
+}
+
+@media (max-width: 480px) {
+  body { font-size: 15px; }
+  .entry-title { font-size: 1.4rem; }
+}

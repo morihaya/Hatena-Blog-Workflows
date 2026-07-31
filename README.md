@@ -7,6 +7,36 @@
   - カスタムドメイン: https://blog.morihaya.tech/
   - オリジナルドメイン: https://morihaya.hatenablog.com/
 
+## 🚧 GitHub Pages への移行について
+
+はてなブログを解約し、GitHub Pages へ移行する作業を進行中。カスタムドメイン `blog.morihaya.tech` と
+URL 構造 `/entry/YYYY/MM/DD/HHMMSS` はそのまま維持する。
+
+| ディレクトリ | 役割 |
+| --- | --- |
+| `entries/` | はてなブログと同期する記事 (従来通り。移行完了までは変更しない) |
+| `scripts/migration/` | `entries/` を静的サイト向けに変換するスクリプト ([README](scripts/migration/README.md)) |
+| `content/` | 変換後の記事 (Hugo の入力) |
+| `layouts/`, `assets/` | 自作の最小テーマ。外部テーマへの依存なし |
+| `static/images/fotolife/` | はてなフォトライフから吸い出した画像 |
+
+ローカルでの確認:
+
+```bash
+hugo server
+```
+
+`main` への push で [deploy-pages.yaml](.github/workflows/deploy-pages.yaml) がビルドし、GitHub Pages へデプロイする。
+`baseURL` は Pages の設定に追従するため、カスタムドメインの切り替え時にワークフローの変更は不要。
+
+### 移行の残作業
+
+1. リポジトリの Settings > Pages で Source を「GitHub Actions」に設定する
+2. `https://morihaya.github.io/Hatena-Blog-Workflows/` で表示を確認する
+3. Route 53 の `blog.morihaya.tech` を `hatenablog.com` から `morihaya.github.io` へ向け替える
+4. Settings > Pages でカスタムドメインを設定し、HTTPS 証明書の発行を待つ
+5. はてなブログを解約する
+
 ## 📋 Quick Reference
 
 基本的に個人のブログしか編集しないため、以下の流れになる。
