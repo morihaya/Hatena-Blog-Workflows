@@ -114,13 +114,43 @@ def build_front_matter(meta: dict[str, object], keep_hatena_meta: bool) -> str:
 # 本文変換
 # --------------------------------------------------------------------------
 
+MASK = "\x01"
+
+
+def mask_code(text: str) -> str:
+    """コード領域をマスク文字で潰した複製を返す。オフセットは元テキストと一致する。
+
+    脚注の走査はコードフェンスやインラインコードの中身を対象にしてはいけないが、
+    脚注は行をまたぐことがあるため行単位では処理できない。そこで走査用に
+    「コードだけ見えないテキスト」を作り、位置は元テキストと共有する。
+    """
+    chars = list(text)
+    in_fence = False
+    pos = 0
+    for line in text.split("\n"):
+        is_fence_marker = line.lstrip().startswith("```")
+        if is_fence_marker or in_fence:
+            chars[pos : pos + len(line)] = MASK * len(line)
+        if is_fence_marker:
+            in_fence = not in_fence
+        pos += len(line) + 1
+
+    # フェンス内は潰れているので、ここで残るのはフェンス外のインラインコードのみ
+    return INLINE_CODE_RE.sub(lambda m: MASK * len(m.group(0)), "".join(chars))
+
+
 def convert_footnotes(text: str, stats: Stats, source: str) -> str:
-    """`((脚注))` を Markdown 脚注に変換する。入れ子の括弧を数えて終端を探す。"""
+    """`((脚注))` を Markdown 脚注に変換する。入れ子の括弧を数えて終端を探す。
+
+    コード内の `((` は脚注ではないため、走査はマスク済みテキストに対して行い、
+    本文の切り出しだけを元テキストから行う。
+    """
+    scan = mask_code(text)
     out: list[str] = []
     notes: list[str] = []
     i = 0
     while True:
-        start = text.find("((", i)
+        start = scan.find("((", i)
         if start == -1:
             out.append(text[i:])
             break
@@ -128,14 +158,14 @@ def convert_footnotes(text: str, stats: Stats, source: str) -> str:
         depth = 0
         j = start + 2
         end = -1
-        while j < len(text):
-            ch = text[j]
+        while j < len(scan):
+            ch = scan[j]
             if ch == "(":
                 depth += 1
             elif ch == ")":
                 if depth > 0:
                     depth -= 1
-                elif text[j : j + 2] == "))":
+                elif scan[j : j + 2] == "))":
                     end = j
                     break
                 else:  # 対応しない `)` -> 脚注ではない
