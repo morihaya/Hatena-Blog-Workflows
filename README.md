@@ -1,4 +1,6 @@
 # blog.morihaya.tech
+[![deploy blog to github pages](https://github.com/morihaya/Hatena-Blog-Workflows/actions/workflows/deploy-pages.yaml/badge.svg)](https://github.com/morihaya/Hatena-Blog-Workflows/actions/workflows/deploy-pages.yaml)
+[![Dependabot Updates](https://github.com/morihaya/Hatena-Blog-Workflows/actions/workflows/dependabot/dependabot-updates/badge.svg)](https://github.com/morihaya/Hatena-Blog-Workflows/actions/workflows/dependabot/dependabot-updates)
 
 個人ブログ「もりはやメモφ(・ω・ )」のリポジトリ。
 
