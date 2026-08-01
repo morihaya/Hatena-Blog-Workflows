@@ -4,11 +4,11 @@
 
 ## リポジトリ概要
 
-- **目的**: はてなブログ（日本のブログサービス）の記事管理
+- **目的**: 個人ブログ「もりはやメモφ(・ω・ )」の記事管理とサイト生成
 - **著者**: もりはや (@morihaya)
-- **ブログURL**:
-  - カスタムドメイン: https://blog.morihaya.tech/
-  - オリジナルドメイン: https://morihaya.hatenablog.com/
+- **ブログURL**: https://blog.morihaya.tech/
+- **構成**: Hugo でビルドし、GitHub Pages へデプロイ（`main` への push で自動）
+  - 2026年8月にはてなブログから移行した
 - **ブログのジャンル**: 技術記事、日常、趣味など（今後は日常・趣味が多くなる予定）
 - **言語**: 日本語のみ
 
@@ -16,19 +16,22 @@
 
 ```
 .
-├── entries/                    # 公開済み記事
-│   └── morihaya.hatenablog.com/
-│       └── entry/
-│           └── YYYY/MM/DD/     # 年/月/日のディレクトリ構造
-│               └── HHMMSS.md   # 記事ファイル（時分秒がファイル名）
-├── draft_entries/              # 下書き記事
-│   └── images/                 # 下書き用画像
-├── images/                     # 画像ファイル
-│   └── draft/
-├── scripts/                    # ユーティリティスクリプト
-├── blogsync.yaml              # blogsync設定ファイル
-└── draft.template             # 下書きテンプレート
+├── content/entry/YYYY/MM/DD/HHMMSS.md  # 記事。この階層がそのまま URL になる
+├── static/images/
+│   ├── fotolife/               # はてなフォトライフから移した画像
+│   └── posts/                  # 移行後に追加する画像
+├── layouts/                    # テンプレート（自作の最小テーマ）
+├── assets/css/                 # テーマ CSS + Chroma
+├── archetypes/default.md       # hugo new のひな形
+├── hugo.toml                   # サイト設定
+├── entries/                    # はてな時代の原本（参照のみ。変更しない）
+├── scripts/migration/          # はてな記法の変換スクリプト
+└── blogsync.yaml               # 移行前の設定（履歴として保持）
 ```
+
+**重要**: 記事の URL ははてなブログ時代と同一（`/entry/YYYY/MM/DD/HHMMSS`）。
+既存の被リンクとはてなブックマーク数がこの URL に紐づいているため、
+`content/` の階層構造は変更しないこと。
 
 ## 記事ファイルの形式
 
@@ -36,16 +39,20 @@
 
 ```markdown
 ---
-Title: 記事タイトル
-Date: 2025-06-30T13:35:27+09:00
-URL: https://blog.morihaya.tech/entry/2025/06/30/133527
-EditURL: https://blog.hatena.ne.jp/morihaya/morihaya.hatenablog.com/atom/entry/xxxxx
+title: "記事タイトル"
+date: 2026-08-01T14:07:33+09:00
+categories:
+  - "カテゴリ名"
+draft: false
 ---
 
 本文...
 ```
 
-下書きの場合は `Draft: true` が含まれます。
+`draft: true` の記事はビルド対象外です（`hugo server -D` でのみ表示されます）。
+
+移行した記事には、元の URL を記録した `hatena:` が残っています（参照用のメタデータで、
+表示には使われません）。
 
 ## AIエージェントの役割
 
@@ -83,24 +90,22 @@ EditURL: https://blog.hatena.ne.jp/morihaya/morihaya.hatenablog.com/atom/entry/x
 - 堅すぎる表現は避ける
 - 読者に親しみやすい文体を心がける
 
-## はてなブログ記法
+## 記法
 
-以下のはてなブログ特有の記法を理解し、適切に扱ってください：
+`content/` の記事は素の Markdown です。はてな記法は移行時にすべて変換済みで、
+新しい記事で使う必要はありません。
 
-### リンク記法
-- `[URL:title]` - URLからタイトルを自動取得
-- `[URL:embed]` - 埋め込み表示
-- `[URL:bookmark]` - ブックマーク数表示
+- 目次: `{{< toc >}}`（はてなの `[:contents]` に相当）
+- 画像: `![説明](/images/posts/<記事のファイル名>/<画像名>.png)`
+- 脚注: `[^1]` と末尾の `[^1]: 定義`
 
-### その他の記法
-- `[f:id:ユーザー名:画像ID]` - はてなフォトライフの画像
-- `[:contents]` - 目次の自動生成
-- `>||` と `||<` - スーパーpre記法
-- `>|言語名|` と `||<` - シンタックスハイライト付きコードブロック
+記事本文に生の HTML が含まれることがあります（移行前の記事に `<img>` タグなど）。
+`hugo.toml` で `goldmark.renderer.unsafe = true` にしてあるのはこのためです。
 
-### 注意事項
-- これらの記法は修正・変更しないこと
-- Markdown標準記法とはてな記法が混在する場合がある
+### entries/ について
+
+`entries/` にははてな記法のままの原本が残っています。**変換の入力かつ移行前の
+記録なので、変更しないこと。** サイトに反映されるのは `content/` のみです。
 
 ## レビュー時の注意事項
 
@@ -111,13 +116,13 @@ EditURL: https://blog.hatena.ne.jp/morihaya/morihaya.hatenablog.com/atom/entry/x
 
 ## ワークフロー
 
-1. 著者がGitHub Actionsから下書きを作成
-2. プルリクエストが自動作成される
-3. 著者が記事を執筆・編集
-4. **AIエージェントがレビューを実施**
-5. 修正後、記事を公開
+1. 著者が `hugo new content entry/$(date +%Y/%m/%d/%H%M%S).md` で記事を作成
+2. ブランチを切って執筆・編集し、プルリクエストを作成
+3. **AIエージェントがレビューを実施**
+4. `draft` を `false` にして `main` へマージ
+5. GitHub Actions がビルドして GitHub Pages へデプロイ
 
 ## 関連ツール
 
-- **blogsync**: はてなブログとの記事同期ツール
-- **GitHub Actions**: 下書き作成・公開の自動化
+- **Hugo**: 静的サイトジェネレータ。ローカル確認は `hugo server -D`
+- **GitHub Actions**: `deploy-pages.yaml` がビルドとデプロイを行う

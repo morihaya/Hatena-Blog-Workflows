@@ -8,6 +8,6 @@
         },
         "editor.snippetSuggestions": "top"
     },
-    "pasteImage.insertPattern": "${imageSyntaxPrefix}images/${currentFileNameWithoutExt}/${imageFileName}${imageSyntaxSuffix}",
-    "pasteImage.path": "${projectRoot}/draft_entries/images/${currentFileNameWithoutExt}"
+    "pasteImage.insertPattern": "${imageSyntaxPrefix}/images/posts/${currentFileNameWithoutExt}/${imageFileName}${imageSyntaxSuffix}",
+    "pasteImage.path": "${projectRoot}/static/images/posts/${currentFileNameWithoutExt}"
 }

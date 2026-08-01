@@ -1,190 +1,80 @@
-# HatenaBlog Workflows Boilerplate(β)
+# blog.morihaya.tech
 
-はてなブログを管理するリポジトリ。[Hatena-Blog-Workflows-Boilerplate
-](https://github.com/hatena/Hatena-Blog-Workflows-Boilerplate)より作成。
+個人ブログ「もりはやメモφ(・ω・ )」のリポジトリ。
 
-- ブログURL
-  - カスタムドメイン: https://blog.morihaya.tech/
-  - オリジナルドメイン: https://morihaya.hatenablog.com/
+- 公開URL: https://blog.morihaya.tech/
+- 生成: [Hugo](https://gohugo.io/)（自作の最小テーマ、外部テーマへの依存なし）
+- ホスティング: GitHub Pages（`main` への push で自動デプロイ）
 
-## 🚧 GitHub Pages への移行について
+2026年8月に、はてなブログから移行した。経緯と手順は
+[はてなブログからGitHub Pagesへ移行します](https://blog.morihaya.tech/entry/2026/08/01/140733/) に書いた。
 
-はてなブログを解約し、GitHub Pages へ移行する作業を進行中。カスタムドメイン `blog.morihaya.tech` と
-URL 構造 `/entry/YYYY/MM/DD/HHMMSS` はそのまま維持する。
+## ディレクトリ構成
 
-| ディレクトリ | 役割 |
+| パス | 役割 |
 | --- | --- |
-| `entries/` | はてなブログと同期する記事 (従来通り。移行完了までは変更しない) |
-| `scripts/migration/` | `entries/` を静的サイト向けに変換するスクリプト ([README](scripts/migration/README.md)) |
-| `content/` | 変換後の記事 (Hugo の入力) |
-| `layouts/`, `assets/` | 自作の最小テーマ。外部テーマへの依存なし |
-| `static/images/fotolife/` | はてなフォトライフから吸い出した画像 |
+| `content/entry/YYYY/MM/DD/HHMMSS.md` | 記事。この階層がそのまま URL になる |
+| `static/images/fotolife/` | はてなフォトライフから移した画像 |
+| `static/images/posts/` | 移行後に追加する画像 |
+| `layouts/` | テンプレート一式 |
+| `assets/css/` | テーマ CSS と Chroma のシンタックスハイライト |
+| `hugo.toml` | サイト設定 |
+| `entries/` | はてなブログ時代の原本（変換の入力。**参照のみで変更しない**） |
+| `scripts/migration/` | はてな記法の変換スクリプト（[README](scripts/migration/README.md)） |
 
-ローカルでの確認:
-
-```bash
-hugo server
-```
-
-`main` への push で [deploy-pages.yaml](.github/workflows/deploy-pages.yaml) がビルドし、GitHub Pages へデプロイする。
-`baseURL` は Pages の設定に追従するため、カスタムドメインの切り替え時にワークフローの変更は不要。
-
-### 移行の残作業
-
-1. リポジトリの Settings > Pages で Source を「GitHub Actions」に設定する
-2. `https://morihaya.github.io/Hatena-Blog-Workflows/` で表示を確認する
-3. Route 53 の `blog.morihaya.tech` を `hatenablog.com` から `morihaya.github.io` へ向け替える
-4. Settings > Pages でカスタムドメインを設定し、HTTPS 証明書の発行を待つ
-5. はてなブログを解約する
-
-## 📋 Quick Reference
-
-基本的に個人のブログしか編集しないため、以下の流れになる。
-
-1. Actions から  `create draft` を選択し、`Title`に記事タイトルを設定、`Branch: main`に対して実行する -> [Link](https://github.com/morihaya/Hatena-Blog-Workflows/actions/workflows/create-draft.yaml)
-2. 作成した下書きを含むプルリクエストが作成される
-3. 2のPRを編集していく
-
-### 画像ファイルについて
-
-画像ファイルはHatenaのサービスである”フォトライフ”に自動でアップロードされる仕組みが[ワークフローによって提供](https://github.com/hatena/hatenablog-workflows/blob/main/fotolife-client.py)されている。
-
-そのため `./.vscode/settings.json` に以下の設定をしてあり、VSCodeのpasteImage Extentionで貼り付けておけば自動でアップロードされる状態となっている。
-
-```json
-...
-    "pasteImage.insertPattern": "${imageSyntaxPrefix}images/${currentFileNameWithoutExt}/${imageFileName}${imageSyntaxSuffix}",
-    "pasteImage.path": "${projectRoot}/draft_entries/images/${currentFileNameWithoutExt}"
-...
-```
-
-
-## Original document
-
-以下からはオリジナルのREADMEの内容です。
-
----
-
-- このBoilerplateは、企業がはてなブログで技術ブログを運営する際のレビューや公開作業など、運営ワークフローを支援する目的で作成しています
-- GitHub 上で、はてなブログとの記事の同期、下書きの作成・編集・公開、公開記事の編集などを行うことができます。下書きの作成時にプルリクエストが作成されるため、記事のレビューなどの業務のワークフローに組み込むことが容易になります
-- 本機能はベータ版です。正常に動作しない可能性がありますが、予めご了承下さい
-
-
-## セットアップ
-
-1. 本リポジトリトップに表示されている、「Use this template ボタンクリック > Create a new repository」から、新規にリポジトリを作成する
-    - ![Use this templateボタンの位置](https://cdn-ak.f.st-hatena.com/images/fotolife/h/hatenablog/20231107/20231107164142.png)
-2. `blogsync.yaml`の各種項目を記述し、変更を `main` ブランチにコミットしてください
-    - `<BLOG DOMAIN>` にはブログのブログ取得時に設定したドメインを指定してください(独自ドメインではありません)
-    - `<BLOG OWNER HATENA ID>` にはブログのオーナー(ブログ作成者)のはてなIDを指定してください
-    - 上記のどちらの項目もブログの「詳細設定 > AtomPub > ルートエンドポイント」から確認できます。ルートエンドポイントは以下のように構成されています
-        - `https://blog.hatena.ne.jp/<BLOG OWNER HATENA ID>/<BLOG DOMAIN>/atom`
-```yaml
-<BLOG DOMAIN>:
-  username: <BLOG OWNER HATENA ID>
-default:
-  local_root: entries
-```
-3. GitHub リポジトリの設定 「`Secrets and variables` > `actions` > `Repository variables`」 から以下のVariableを登録する
-    - Name: `BLOG_DOMAIN`
-    - Value: ブログのドメインを指定してください 例) staff.hatenablog.com
-4. GitHub リポジトリの設定 「`Secrets and variables` > `actions` > `Repository Secrets`」 から以下のSecretを登録する
-    - Name: `OWNER_API_KEY`
-    - Secret: ブログのオーナーはてなアカウントの APIキーを指定してください
-        - APIキーは、ブログオーナーアカウントでログイン後、[アカウント設定](https://blog.hatena.ne.jp/-/config) よりご確認いただけます
-5. GitHub リポジトリの設定 「`Actions` > `General`」 の `Workflow permissions` の設定を以下の通り変更する
-    - `Read and write permissions` を選択する
-    - `Allow GitHub Actions to create and approve pull requests` にチェックを入れる
-6. GitHub リポジトリの設定 「`Branches`」 の`Add branch protection rule`ボタンから、ルールを作成する
-    - `Branch name pattern` に `main` を指定する
-7. GiHub リポジトリの設定 「`General`」 の `Pull Requests` 項の `Allow auto merge` にチェックを入れる
-8. リポジトリにはてなブログの記事を同期させる
-    - Actions タブを開き `initialize` workflow を選択する
-    - Run workflow をクリック
-    - `Branch: main` が指定されていることを確認し、`Run workflow`ボタンをクリック
-    - 全記事が含まれたプルリクエストが作成されます。これをマージしてはてなブログとリポジトリの状況を同期させてください
-    - ![Actionsタブ、workflowリスト、Run workflowボタン](https://cdn-ak.f.st-hatena.com/images/fotolife/h/hatenablog/20231107/20231107163433.png)
-9. はてなブログの「[設定 > 編集モード](https://blog.hatena.ne.jp/my/config#blog-config-syntax)」設定を「Markdownモード」に設定する
-
-## オプション
-- 下書きの作成時のプルリクエストをドラフトプルリクエストとして作成するかどうかのオプション
-  - ドラフトプルリクエストは[利用できるプランに制限](https://docs.github.com/ja/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/changing-the-stage-of-a-pull-request)があります。対象外のプランを利用している場合、以下のファイルの該当行を `draft: false` に変更してください
-  - `/.github/workflows/pull-draft.yaml#L15`
-  - `/.github/workflows/create-draft.yaml#L15`
-
-## 想定ワークフロー
-
-このツールで想定している下書き作成から記事公開までのワークフローは以下のとおりです。
-
-1. 下書きを作成する
-2. 下書き記事をプルリクエスト上で編集する
-3. 適宜レビューなどを行い、通れば次の公開手順に進む
-4. 下書き記事を公開する
-
-## 手順の詳細
-
-### 下書きの作成
-
-下書きの作成方法は以下の2通りの方法があります。
-
-- ブログメンバーが個人のアカウントで投稿する(記事の署名は個人のアカウントになります)
-- ブログオーナーのアカウントで投稿する(記事の署名はブログオーナーアカウントになります)
-
-それぞれ、下書き作成の手順が異なります。ブログの運営方針や記事の内容に沿った方法を選択してください。
-
-### ブログメンバーが個人のアカウントで投稿する場合
-
-1. 投稿したいブログの編集画面を開く
-2. 下書き記事の記事タイトルを `{{username}}-{{日付}}` 等、ユニークな記事タイトルに設定し、クリップボードにコピーしておく
-3. 下書きを投稿する
-4. Actions から `pull draft from hatenablog`を選択し、`Draft Entry Title`に先程コピーしたタイトルを設定、`Branch: main`に対して実行する
-5. 投稿した下書きを含むプルリクエストが作成される
-
-### ブログオーナーのアカウントで投稿する場合
-
-1. Actions から  `create draft` を選択し、`Title`に記事タイトルを設定、`Branch: main`に対して実行する
-2. 作成した下書きを含むプルリクエストが作成される
-
-### 下書き記事の編集
-
-- 手順「下書きの作成」で作成したプルリクエスト上で記事を編集してください
-- はてなブログでプレビューできるようにするため、下書き記事に限りプッシュされた時点ではてなブログに同期されます
-- 記事の編集画面の URL は、プルリクエストに記載されています。編集画面に遷移した後、下書きプレビューの URL を発行し、プルリクエストの概要に記載しておくとプレビューが容易になります
-
-### 下書き記事の公開
-
-- 下書き記事の `Draft: true` 行を削除し、プルリクエストを main ブランチにマージすると記事がはてなブログで公開されます
-- 記事を公開すると、下書き記事は 下書き記事用ディレクトリ `draft_entries` から 公開記事用`entries` ディレクトリに移管されます
-
-### 既存記事を修正する場合
-
-- 修正ブランチを作成し、main ブランチにマージすると修正がはてなブログに反映されます
-
-## Boilerplateに新しく追加されたWorkflowを取得する
-
-- workflowの変更は原則 [Reusable workflows](https://github.com/hatena/hatenablog-workflows) を変更するため基本的には更新は不要です
-- ただし、新しくworkflowが追加されたりした場合は、Boilerplateを元に作成されたリポジトリに新しいファイルを追加したり既存のファイルを更新する必要があります
-- 新しいファイルを取得するには`scripts/download_boilerplate_workflows.sh`を実行してください
+## 記事を書く
 
 ```bash
-bash scripts/download_boilerplate_workflows.sh
+hugo new content entry/$(date +%Y/%m/%d/%H%M%S).md
 ```
 
-### Scriptが見つからない場合
+`archetypes/default.md` から `draft: true` の記事が生成される。書き終えたら
+`draft` を `false` にして `main` へマージすると公開される。
 
-- 手元のリポジトリに上記のファイルがない場合があります
-- お手数ですが、その場合は[こちらのファイル](https://github.com/hatena/Hatena-Blog-Workflows-Boilerplate/blob/main/scripts/download_boilerplate_workflows.sh)を自身のリポジトリに追加してください
+ローカルでの確認（`-D` で下書きも表示）:
 
-## トラブルシューティング
+```bash
+hugo server -D
+```
 
-### はてなブログ側のデータとリポジトリのデータとで差分が発生した場合
+### 画像
 
-はてなブログのWebの編集画面から記事を更新するなど、はてなブログ側のデータとリポジトリのデータに差異が発生してしまう場合があります。
-この場合、 Actions の `pull from hatenablog` を選択、`Branch: main`に対して実行してください。
-実行すると、リポジトリの更新日時以降に更新された公開記事のデータを更新するプルリクエストが作成されます。
-これをマージすることで、最新のデータに更新することができます。
+`static/images/posts/<記事のファイル名>/` に置き、`/images/posts/...` の絶対パスで参照する。
 
-## workflow に関する詳細
+```markdown
+![説明](/images/posts/140955/screenshot.png)
+```
 
-- 各 workflow では下記で提供されている Reusable workflows を利用しています
-  - https://github.com/hatena/hatenablog-workflows
+VS Code の PasteImage 拡張を使う場合、`.vscode/settings.json` が上記の配置に
+なるよう設定してある。貼り付けるだけで正しいパスが入る。
+
+### 目次
+
+はてなの `[:contents]` に相当するショートコードを用意してある。
+
+```
+{{< toc >}}
+```
+
+## URL 構造について
+
+記事の URL は `/entry/YYYY/MM/DD/HHMMSS` で、はてなブログ時代と同一。
+**既存の被リンクとはてなブックマーク数がこの URL に紐づいている**ため、
+`content/` の階層構造は変えないこと。
+
+## デプロイ
+
+`main` への push で [deploy-pages.yaml](.github/workflows/deploy-pages.yaml) が
+ビルドして GitHub Pages へデプロイする。
+
+`baseURL` は `actions/configure-pages` の出力に追従するため、
+ドメインを変えてもワークフローの修正は不要。ただし**カスタムドメインの設定を
+変更した直後は一度デプロイし直す必要がある**（`baseURL` はビルド時に決まるため）。
+
+## はてなブログ側について
+
+Pro を解約し、無料枠でアカウントとブログ（`morihaya.hatenablog.com`）を残している。
+フォトライフの画像を他所から参照している可能性があるため、アカウントは削除しない。
+
+はてなの API を叩いていた同期用ワークフローは役目を終えたため削除した。
+`entries/` と `blogsync.yaml` は移行前の原本として残してある。

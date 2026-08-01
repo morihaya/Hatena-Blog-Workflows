@@ -22,8 +22,6 @@ enableGitInfo = false
 [params]
   description = "もりはやのメモ書き"
   author = "morihaya"
-  # はてなブログ時代の記事もここに残っている旨のフッタ表記に使う
-  hatenaBlogURL = "https://morihaya.hatenablog.com/"
 
 [markup]
   [markup.goldmark.renderer]
