@@ -4,6 +4,8 @@
     <h1 class="entry-title">{{ .Title }}</h1>
     <div class="entry-meta">
       <time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">{{ .Date.Format "2006-01-02" }}</time>
+      <span class="entry-meta-sep" aria-hidden="true">/</span>
+      <span>約 {{ .ReadingTime }} 分で読めます</span>
       {{- with .Params.categories }}
       <span class="entry-categories">
         {{- range . }}{{ with site.GetPage (printf "/categories/%s" .) }}<a class="category" href="{{ .RelPermalink }}">{{ .Title }}</a>{{ end }}{{ end }}
@@ -18,7 +20,11 @@
 </article>
 
 <nav class="entry-nav">
-  <span class="entry-nav-prev">{{ with .PrevInSection }}<a href="{{ .RelPermalink }}">&larr; {{ .Title }}</a>{{ end }}</span>
-  <span class="entry-nav-next">{{ with .NextInSection }}<a href="{{ .RelPermalink }}">{{ .Title }} &rarr;</a>{{ end }}</span>
+  <span class="entry-nav-prev">
+    {{- with .PrevInSection }}<a href="{{ .RelPermalink }}"><span class="entry-nav-label">&larr; 前の記事</span>{{ .Title }}</a>{{ end -}}
+  </span>
+  <span class="entry-nav-next">
+    {{- with .NextInSection }}<a href="{{ .RelPermalink }}"><span class="entry-nav-label">次の記事 &rarr;</span>{{ .Title }}</a>{{ end -}}
+  </span>
 </nav>
 {{ end }}

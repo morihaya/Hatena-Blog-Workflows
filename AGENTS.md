@@ -22,10 +22,12 @@
 │   └── posts/                  # 移行後に追加する画像
 ├── layouts/                    # テンプレート（自作の最小テーマ）
 ├── assets/css/                 # テーマ CSS + Chroma
+├── assets/js/theme.js          # ライト/ダークの切り替え
 ├── archetypes/default.md       # hugo new のひな形
 ├── hugo.toml                   # サイト設定
 ├── entries/                    # はてな時代の原本（参照のみ。変更しない）
 ├── scripts/migration/          # はてな記法の変換スクリプト
+├── scripts/gen-chroma.py       # assets/css/chroma.css を生成（直接編集しない）
 └── blogsync.yaml               # 移行前の設定（履歴として保持）
 ```
 

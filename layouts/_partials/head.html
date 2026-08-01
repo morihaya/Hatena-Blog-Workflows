@@ -1,5 +1,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+
+{{- /* 保存済みのテーマを描画前に反映する。CSS より先に走らせないと切り替え時に
+       一瞬もとの配色が見える。手動選択がなければ OS 設定に任せる (属性を付けない) */}}
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem("theme");
+      if (t === "light" || t === "dark") document.documentElement.dataset.theme = t;
+    } catch (e) {}
+  })();
+</script>
 
 {{- $title := cond .IsHome site.Title (printf "%s - %s" .Title site.Title) }}
 <title>{{ $title }}</title>
@@ -23,3 +35,6 @@
 
 {{- $css := slice (resources.Get "css/main.css") (resources.Get "css/chroma.css") | resources.Concat "css/bundle.css" | minify | fingerprint }}
 <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+
+{{- $js := resources.Get "js/theme.js" | minify | fingerprint }}
+<script defer src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}"></script>
