@@ -5,6 +5,14 @@
   <li class="entry-item">
     <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
     <a class="entry-link" href="{{ .RelPermalink }}">{{ .Title }}</a>
+    {{- /* 抜粋。{{< toc >}} が冒頭近くにある記事は要約に目次が丸ごと入ってしまうため
+           先に取り除く。移行記事は画像やコードから始まるものもあるので、
+           タグを落として空になったときは何も出さない */}}
+    {{- $summary := replaceRE `(?s)<nav class="toc".*?</nav>` "" .Summary }}
+    {{- $excerpt := or .Description ($summary | plainify | replaceRE `\s+` " ") | chomp }}
+    {{- with $excerpt }}
+    <p class="entry-excerpt">{{ . | truncate 120 }}</p>
+    {{- end }}
     {{- with .Params.categories }}
     <span class="entry-categories">
       {{- range . }}{{ with site.GetPage (printf "/categories/%s" .) }}<a class="category" href="{{ .RelPermalink }}">{{ .Title }}</a>{{ end }}{{ end }}

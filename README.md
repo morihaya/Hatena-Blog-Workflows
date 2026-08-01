@@ -20,9 +20,25 @@
 | `static/images/posts/` | 移行後に追加する画像 |
 | `layouts/` | テンプレート一式 |
 | `assets/css/` | テーマ CSS と Chroma のシンタックスハイライト |
+| `assets/js/theme.js` | ヘッダーのライト/ダーク切り替え |
 | `hugo.toml` | サイト設定 |
 | `entries/` | はてなブログ時代の原本（変換の入力。**参照のみで変更しない**） |
 | `scripts/migration/` | はてな記法の変換スクリプト（[README](scripts/migration/README.md)） |
+| `scripts/gen-chroma.py` | `assets/css/chroma.css` の生成 |
+
+## 見た目
+
+配色は OS のライト/ダーク設定に追従し、ヘッダー右のボタンで手動切り替えもできる
+（選択は `localStorage` に保存される）。手動選択は `<html data-theme="light|dark">`
+として反映されるので、テーマに関わる CSS は「OS 設定」と「`data-theme`」の
+両方を見る必要がある。`assets/css/main.css` の冒頭がその形になっている。
+
+`assets/css/chroma.css` も同じ理由でセレクタを二重に持つ。手書きせず、
+スタイルを変えたいときは生成スクリプトを実行する。
+
+```bash
+python3 scripts/gen-chroma.py
+```
 
 ## 記事を書く
 

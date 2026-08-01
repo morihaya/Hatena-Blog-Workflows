@@ -1,19 +1,21 @@
 {{ define "main" }}
   {{- /* /entry/ や /entry/2025/ などの自動生成セクション、カテゴリ一覧の両方をここで扱う */ -}}
-  <h1 class="page-title">
-    {{- if eq .Kind "term" }}カテゴリ: {{ .Title }}
-    {{- else if eq .Section "entry" }}{{ with .Title }}{{ . }}{{ else }}記事一覧{{ end }}
-    {{- else }}{{ .Title }}{{ end -}}
-  </h1>
-
-  {{- with .Content }}<div class="content">{{ . }}</div>{{ end }}
+  <div class="page-header">
+    <h1 class="page-title">
+      {{- if eq .Kind "term" }}カテゴリ: {{ .Title }}
+      {{- else if eq .Section "entry" }}{{ with .Title }}{{ . }}{{ else }}記事一覧{{ end }}
+      {{- else }}{{ .Title }}{{ end -}}
+    </h1>
+    {{- if eq .Kind "term" }}<p class="page-lede">{{ len .Pages }} 件の記事</p>{{ end }}
+    {{- with .Content }}<div class="content">{{ . }}</div>{{ end }}
+  </div>
 
   {{- $pages := .RegularPagesRecursive }}
   {{- if eq .Kind "taxonomy" }}
     {{- /* /categories/ はカテゴリ名の一覧を出す */ -}}
     <ul class="term-list">
       {{- range .Pages.ByTitle }}
-      <li><a href="{{ .RelPermalink }}">{{ .Title }}</a> <span class="term-count">{{ len .Pages }}</span></li>
+      <li><a href="{{ .RelPermalink }}">{{ .Title }} <span class="term-count">{{ len .Pages }}</span></a></li>
       {{- end }}
     </ul>
   {{- else if $pages }}
