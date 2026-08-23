@@ -228,6 +228,7 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
   color: var(--fg-muted);
   font-size: 0.95rem;
 }
+.page-lede:first-child { margin-top: 0; }
 
 .entry-list { list-style: none; padding: 0; margin: 0; }
 .entry-item {
