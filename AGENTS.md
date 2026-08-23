@@ -124,6 +124,21 @@ draft: false
 4. `draft` を `false` にして `main` へマージ
 5. GitHub Actions がビルドして GitHub Pages へデプロイ
 
+## GitHubアカウント
+
+このリポジトリは個人アカウント `morihaya` のリポジトリであり、GitHub CLIを使う
+操作（PRの作成・参照・マージ、Issue操作など）には必ず `morihaya` の認証を使う。
+業務用のEnterprise Managed Userがアクティブでも、その認証で操作しないこと。
+
+複数アカウントのグローバルな選択状態を変えないため、`gh auth switch` は使わず、
+必要なコマンドだけ次のように個人アカウントのトークンを指定する。
+
+```sh
+GH_TOKEN="$(gh auth token -u morihaya)" gh <command>
+```
+
+実行前に必要に応じて `gh auth status` と `git remote -v` で対象を確認する。
+
 ## 関連ツール
 
 - **Hugo**: 静的サイトジェネレータ。ローカル確認は `hugo server -D`
