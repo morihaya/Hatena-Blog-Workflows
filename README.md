@@ -74,6 +74,26 @@ VS Code の PasteImage 拡張を使う場合、`.vscode/settings.json` が上記
 {{< toc >}}
 ```
 
+### リンクカード
+
+URL の前後を空行にして単独行にすると、リンク先のタイトル、説明、OGP 画像を使った
+カードとして表示される。
+
+```markdown
+本文。
+
+https://github.com/johnste/finicky
+
+続きの本文。
+```
+
+新しい URL を追加したら、メタデータのキャッシュを更新する。取得できない場合も
+Hugo のビルドは失敗せず、通常の URL リンクとして表示される。
+
+```bash
+python3 scripts/fetch_link_cards.py
+```
+
 ## URL 構造について
 
 記事の URL は `/entry/YYYY/MM/DD/HHMMSS` で、はてなブログ時代と同一。
