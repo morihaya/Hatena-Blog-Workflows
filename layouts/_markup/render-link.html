@@ -1,0 +1,21 @@
+{{- $destination := .Destination -}}
+{{- $text := .Text | plainify -}}
+{{- $card := false -}}
+{{- if eq $text $destination -}}
+  {{- $card = index site.Data.link_cards $destination -}}
+{{- end -}}
+<a href="{{ $destination | safeURL }}"{{ with .Title }} title="{{ . }}"{{ end }}{{ with $card }} class="link-card"{{ end }}>
+  {{- with $card -}}
+    <span class="link-card-body">
+      <strong class="link-card-title">{{ .title }}</strong>
+      {{- with .description }}<span class="link-card-description">{{ . }}</span>{{ end }}
+      <span class="link-card-site">{{ .site_name }}</span>
+    </span>
+    {{- with .image -}}
+      <span class="link-card-thumbnail"><img src="{{ . | safeURL }}" alt="" loading="lazy" referrerpolicy="no-referrer"></span>
+    {{- end -}}
+    <span class="link-card-url">{{ $text }}</span>
+  {{- else -}}
+    {{- .Text | safeHTML -}}
+  {{- end -}}
+</a>

@@ -398,6 +398,78 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
 .content li { margin: 0.35rem 0; }
 .content li::marker { color: var(--accent); }
 
+/* Markdown の単独行 URL は、メタデータがあればリンクカードとして表示する。
+   :only-child により、文章中の裸 URL は通常のインラインリンクのままになる。 */
+.link-card-body, .link-card-thumbnail { display: none; }
+.content p > .link-card:only-child {
+  display: flex;
+  align-items: stretch;
+  min-height: 8rem;
+  overflow: hidden;
+  color: var(--fg);
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  line-height: 1.55;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+.content p > .link-card:only-child:hover {
+  color: var(--fg);
+  border-color: var(--border-strong);
+  text-decoration: none;
+  transform: translateY(-1px);
+}
+.content p > .link-card:only-child .link-card-body {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  padding: 1rem 1.15rem;
+}
+.link-card-title {
+  display: -webkit-box;
+  overflow: hidden;
+  font-size: 1rem;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+.link-card-description {
+  display: -webkit-box;
+  overflow: hidden;
+  margin-top: 0.35rem;
+  color: var(--fg-muted);
+  font-size: 0.82rem;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+.link-card-site {
+  margin-top: 0.55rem;
+  overflow: hidden;
+  color: var(--fg-muted);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.content p > .link-card:only-child .link-card-thumbnail {
+  display: block;
+  flex: 0 0 12rem;
+  background: var(--bg-inset);
+}
+.content p > .link-card:only-child .link-card-thumbnail img {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  object-fit: cover;
+}
+.content p > .link-card:only-child .link-card-url { display: none; }
+
 .content img {
   max-width: 100%;
   height: auto;
@@ -600,6 +672,9 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
   .site-nav { font-size: 0.82rem; }
   .entry-item { padding: 1.1rem 0.75rem; margin: 0 -0.75rem; }
   .entry-link { font-size: 1.05rem; }
+  .content p > .link-card:only-child { min-height: 6.5rem; }
+  .content p > .link-card:only-child .link-card-thumbnail { flex-basis: 7rem; }
+  .link-card-description { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
