@@ -4,6 +4,8 @@ on:
   pull_request:
     paths:
       - "content/entry/**/*.md"
+      - "scripts/check_article_format.py"
+      - ".github/workflows/check-article-format.yaml"
 
 permissions:
   contents: read
