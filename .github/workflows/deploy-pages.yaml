@@ -40,7 +40,7 @@ jobs:
 
       - name: Configure Pages
         id: pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6
 
       # base_url は Pages の設定に追従する。カスタムドメイン設定前は
       # https://morihaya.github.io/<repo>、設定後は https://blog.morihaya.tech になる
