@@ -1,6 +1,9 @@
 <header class="site-header">
   <div class="container">
-    <a class="site-title" href="{{ site.Home.RelPermalink }}">{{ site.Title }}</a>
+    <a class="site-title" href="{{ site.Home.RelPermalink }}">
+      <img class="site-logo" src="{{ "images/profile/morihaya.png" | relURL }}" alt="" width="36" height="36">
+      <span>{{ site.Title }}</span>
+    </a>
     <nav class="site-nav">
       {{- with site.GetPage "/entry" }}<a href="{{ .RelPermalink }}">記事一覧</a>{{ end }}
       {{- with site.GetPage "/categories" }}<a href="{{ .RelPermalink }}">カテゴリ</a>{{ end }}

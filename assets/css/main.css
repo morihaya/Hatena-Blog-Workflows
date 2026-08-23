@@ -144,12 +144,21 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
   gap: 0.5rem 1rem;
 }
 .site-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
   font-size: 1.05rem;
   font-weight: 700;
   letter-spacing: -0.01em;
   color: var(--fg);
 }
 .site-title:hover { color: var(--accent); text-decoration: none; }
+.site-logo {
+  width: 2.25rem;
+  height: 2.25rem;
+  flex: 0 0 auto;
+  object-fit: contain;
+}
 
 .site-nav {
   display: flex;

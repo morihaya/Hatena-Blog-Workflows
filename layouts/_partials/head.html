@@ -20,6 +20,8 @@
 <meta name="description" content="{{ $description | plainify | truncate 160 }}">
 
 <link rel="canonical" href="{{ .Permalink }}">
+<link rel="icon" type="image/png" sizes="32x32" href="{{ "icons/favicon-32.png" | relURL }}">
+<link rel="apple-touch-icon" sizes="180x180" href="{{ "icons/apple-touch-icon.png" | relURL }}">
 
 <meta property="og:type" content="{{ cond .IsPage "article" "website" }}">
 <meta property="og:title" content="{{ $title }}">
